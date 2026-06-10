@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V7
+.Trashes
+
+# Bob session artifacts
+.bob/notes/
+
+# Node
+node_modules/
