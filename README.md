@@ -5,39 +5,50 @@
 
 ---
 
-## Setup — true one-liner
+## Install — one-liner
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh | bash
 ```
 
-With a target path or dry-run:
+With a target path:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh \
-  | bash -s -- ~/path/to/your-project [--dry-run]
+  | bash -s -- ~/path/to/your-project
 ```
 
-Or if you've already cloned this repo:
+Dry-run (no files written):
+```bash
+curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh \
+  | bash -s -- ~/path/to/your-project --dry-run
+```
+
+Already cloned this repo?
 ```bash
 gsd-setup/install.sh ~/path/to/your-project
 ```
 
 ---
 
-## Documentation
+## What gets installed
 
-All user-facing setup files live in [`gsd-setup/`](gsd-setup/):
+Running the installer copies into your target project:
 
-| File | Purpose |
-|---|---|
-| [`gsd-setup/README.md`](gsd-setup/README.md) | Full setup guide (start here) |
-| [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) | Full deploy reference |
-| [`gsd-setup/install.sh`](gsd-setup/install.sh) | One-liner bootstrapper (curl entrypoint) |
-| [`gsd-setup/scripts/deploy-gsd.sh`](gsd-setup/scripts/deploy-gsd.sh) | Interactive installer |
-| [`gsd-setup/scripts/run-unattended.sh`](gsd-setup/scripts/run-unattended.sh) | Autonomous loop driver (bash) |
-| [`gsd-setup/scripts/run-unattended.ps1`](gsd-setup/scripts/run-unattended.ps1) | Autonomous loop driver (PowerShell) |
-| [`gsd-setup/scripts/run-unattended.bat`](gsd-setup/scripts/run-unattended.bat) | Autonomous loop driver (cmd.exe) |
-| [`gsd-setup/test/`](gsd-setup/test/) | Validation test suite |
+- **`.gsd/`** — workflow state files (`PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, etc.)
+- **`.bob/rules-*/`** — GSD mode behavioral guardrails
+- **`.bob/custom_modes.yaml`** — GSD mode definitions Bob loads at runtime
+- **`.gitignore`** — `.bob/notes/` entry appended (idempotent)
+
+See [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) for full details.
+
+---
+
+## After install
+
+1. `cd` into your target project
+2. Open a Bob session
+3. Switch to **GSD Initializer** mode — Bob will interview you and write all `.gsd/` files
+4. Switch to **GSD Orchestrator** and send: `"Advance the GSD workflow one step."`
 
 ---
 
@@ -57,12 +68,33 @@ All user-facing setup files live in [`gsd-setup/`](gsd-setup/):
 ```
 bob-gsd/
   gsd-setup/              ← everything a user needs to install GSD
-    install.sh            ← one-liner bootstrapper
+    install.sh            ← one-liner bootstrapper (curl entrypoint)
     scripts/              ← deploy + loop driver scripts (all platforms)
-    docs/                 ← deploy reference docs
+      deploy-gsd.sh       ← interactive installer
+      run-unattended.sh   ← autonomous loop driver (bash / macOS / Linux / Git Bash)
+      run-unattended.ps1  ← autonomous loop driver (PowerShell)
+      run-unattended.bat  ← autonomous loop driver (cmd.exe)
+      gen-modes.sh        ← mode validator / regenerator
+    docs/
+      DEPLOY.md           ← full deploy reference
     test/                 ← validation test suite
     .gitignore.snippet    ← appended to target .gitignore on install
 
   .gsd/                   ← scaffold templates (copied into target projects)
   .bob/                   ← GSD mode definitions + rules (copied into target projects)
 ```
+
+---
+
+## File reference
+
+| File | Purpose |
+|---|---|
+| [`gsd-setup/install.sh`](gsd-setup/install.sh) | One-liner bootstrapper — curl entrypoint |
+| [`gsd-setup/scripts/deploy-gsd.sh`](gsd-setup/scripts/deploy-gsd.sh) | Interactive installer (all platforms) |
+| [`gsd-setup/scripts/run-unattended.sh`](gsd-setup/scripts/run-unattended.sh) | Autonomous loop driver (bash) |
+| [`gsd-setup/scripts/run-unattended.ps1`](gsd-setup/scripts/run-unattended.ps1) | Autonomous loop driver (PowerShell) |
+| [`gsd-setup/scripts/run-unattended.bat`](gsd-setup/scripts/run-unattended.bat) | Autonomous loop driver (cmd.exe) |
+| [`gsd-setup/scripts/gen-modes.sh`](gsd-setup/scripts/gen-modes.sh) | Mode validator / regenerator |
+| [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) | Full deploy reference |
+| [`gsd-setup/test/`](gsd-setup/test/) | Validation test suite |

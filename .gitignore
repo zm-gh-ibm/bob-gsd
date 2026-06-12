@@ -5,8 +5,9 @@
 .Spotlight-V7
 .Trashes
 
-# Bob session artifacts
-.bob/notes/
+# Bob config & session artifacts (project-local, not for sharing)
+.bob/
+.gsd/
 
 # Node
 node_modules/
