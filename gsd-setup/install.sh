@@ -5,7 +5,7 @@
 #   Supports two modes:
 #
 #   1. Piped (curl | bash):
-#      curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh | bash
+#      curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh | bash
 #      curl -fsSL …/install.sh | bash -s -- ~/path/to/your-project
 #      curl -fsSL …/install.sh | bash -s -- ~/path/to/your-project --dry-run
 #
@@ -31,7 +31,7 @@ error()   { echo -e "${RED}  ✗ ERROR:${RESET} $*" >&2; exit 1; }
 step()    { echo -e "\n${BOLD}$*${RESET}"; }
 
 # ── GSD repo location ─────────────────────────────────────────────────────────
-GSD_REPO_URL="https://github.com/zack-maz/bob-gsd.git"
+GSD_REPO_URL="https://github.com/zm-gh-ibm/bob-gsd.git"
 GSD_DEFAULT_CLONE_DIR="$HOME/tools/bob-gsd"
 
 # ── detect piped vs direct invocation ────────────────────────────────────────
