@@ -6,19 +6,28 @@
 #
 #   1. Piped (curl | bash):
 #      curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh | bash
+#      → installs into the directory you ran the command from (no prompt needed)
+#
 #      curl -fsSL …/install.sh | bash -s -- ~/path/to/your-project
+#      → installs into the specified path
+#
 #      curl -fsSL …/install.sh | bash -s -- ~/path/to/your-project --dry-run
 #
 #   2. Direct (already cloned):
 #      gsd-setup/install.sh [<target-project-path>] [--dry-run]
+#      → prompts for target if not supplied (stdin is a tty)
 #
 #   What it does:
 #     a. If running piped (no local clone), clones bob-gsd to ~/tools/bob-gsd
-#     b. Delegates to gsd-setup/scripts/deploy-gsd.sh <target> [--dry-run]
+#     b. Passes the caller's CWD as the default target to deploy-gsd.sh
+#     c. Delegates to gsd-setup/scripts/deploy-gsd.sh <target> [--dry-run]
 #
 #   Platforms: macOS, Linux (bash 3.2+), Windows Git Bash / WSL
 #
 set -euo pipefail
+
+# ── capture CWD immediately — before anything changes it ─────────────────────
+ORIGINAL_PWD="$(pwd)"
 
 # ── colour helpers ────────────────────────────────────────────────────────────
 RED='\033[0;31m'; YELLOW='\033[1;33m'; GREEN='\033[0;32m'
@@ -132,9 +141,16 @@ step "2/2  Running deploy-gsd.sh"
 echo
 
 # Build args for deploy script
+# When no explicit target was given, pass the original CWD so deploy-gsd.sh
+# always defaults to the directory the user was in when they ran the curl
+# one-liner — even if stdin is not a tty and the interactive prompt is skipped.
 DEPLOY_ARGS=()
-[ -n "$TARGET" ] && DEPLOY_ARGS+=("$TARGET")
+if [ -n "$TARGET" ]; then
+  DEPLOY_ARGS+=("$TARGET")
+else
+  DEPLOY_ARGS+=("$ORIGINAL_PWD")
+fi
 [ -n "$DRY_RUN_FLAG" ] && DEPLOY_ARGS+=("$DRY_RUN_FLAG")
 
 chmod +x "$DEPLOY_SCRIPT"
-exec "$DEPLOY_SCRIPT" "${DEPLOY_ARGS[@]+"${DEPLOY_ARGS[@]}"}"
+exec "$DEPLOY_SCRIPT" "${DEPLOY_ARGS[@]}"
