@@ -6,8 +6,11 @@
 .Trashes
 
 # Bob config & session artifacts (project-local, not for sharing)
+# The gsd-setup/template/ copies ARE tracked — they are the install source.
 .bob/
 .gsd/
+!gsd-setup/template/.bob/
+!gsd-setup/template/.gsd/
 
 # Node
 node_modules/
