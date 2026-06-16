@@ -66,13 +66,20 @@ GSD_REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # ── target path ───────────────────────────────────────────────────────────────
 if [ -z "$TARGET" ]; then
-  echo
-  echo -e "${BOLD}GSD Deploy — target project path${RESET}"
-  echo "  Enter the path to the project you want to install GSD into."
-  echo "  Press Enter to use the current directory: $(pwd)"
-  echo
-  read -r -p "  Target path: " input_path
-  TARGET="${input_path:-$(pwd)}"
+  # When stdin is not a tty (e.g. curl | bash one-liner), skip the interactive
+  # prompt and use the current working directory directly.
+  if [ -t 0 ]; then
+    echo
+    echo -e "${BOLD}GSD Deploy — target project path${RESET}"
+    echo "  Enter the path to the project you want to install GSD into."
+    echo "  Press Enter to use the current directory: $(pwd)"
+    echo
+    read -r -p "  Target path: " input_path
+    TARGET="${input_path:-$(pwd)}"
+  else
+    TARGET="$(pwd)"
+    info "No target specified — using current directory: $TARGET"
+  fi
 fi
 
 # Expand ~ and resolve to absolute path
