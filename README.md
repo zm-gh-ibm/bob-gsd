@@ -8,18 +8,18 @@
 ## Install — one-liner
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh | bash
 ```
 
 With a target path:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh \
+curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh \
   | bash -s -- ~/path/to/your-project
 ```
 
 Dry-run (no files written):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh \
+curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh \
   | bash -s -- ~/path/to/your-project --dry-run
 ```
 
@@ -37,7 +37,7 @@ Running the installer copies into your target project:
 - **`.gsd/`** — workflow state files (`PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, etc.)
 - **`.bob/rules-*/`** — GSD mode behavioral guardrails
 - **`.bob/custom_modes.yaml`** — GSD mode definitions Bob loads at runtime
-- **`.gitignore`** — `.bob/notes/` entry appended (idempotent)
+- **`.gitignore`** — `.gsd/`, `.bob/`, and `.bob/notes/` entries appended (idempotent)
 
 See [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) for full details.
 
@@ -74,14 +74,14 @@ bob-gsd/
       run-unattended.sh   ← autonomous loop driver (bash / macOS / Linux / Git Bash)
       run-unattended.ps1  ← autonomous loop driver (PowerShell)
       run-unattended.bat  ← autonomous loop driver (cmd.exe)
-      gen-modes.sh        ← mode validator / regenerator
+      gen-modes.sh        ← mode validator
     docs/
       DEPLOY.md           ← full deploy reference
-    test/                 ← validation test suite
-    .gitignore.snippet    ← appended to target .gitignore on install
-
-  .gsd/                   ← scaffold templates (copied into target projects)
-  .bob/                   ← GSD mode definitions + rules (copied into target projects)
+    template/
+      .bob/               ← GSD mode definitions + rules (source of truth; copied on install)
+        gsd_modes.yaml    ← THE source of truth for GSD modes (edit this)
+        rules-*/          ← per-mode behavioral guardrails
+      .gsd/               ← scaffold templates (copied into target projects on install)
 ```
 
 ---
@@ -95,6 +95,5 @@ bob-gsd/
 | [`gsd-setup/scripts/run-unattended.sh`](gsd-setup/scripts/run-unattended.sh) | Autonomous loop driver (bash) |
 | [`gsd-setup/scripts/run-unattended.ps1`](gsd-setup/scripts/run-unattended.ps1) | Autonomous loop driver (PowerShell) |
 | [`gsd-setup/scripts/run-unattended.bat`](gsd-setup/scripts/run-unattended.bat) | Autonomous loop driver (cmd.exe) |
-| [`gsd-setup/scripts/gen-modes.sh`](gsd-setup/scripts/gen-modes.sh) | Mode validator / regenerator |
+| [`gsd-setup/scripts/gen-modes.sh`](gsd-setup/scripts/gen-modes.sh) | Mode validator |
 | [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) | Full deploy reference |
-| [`gsd-setup/test/`](gsd-setup/test/) | Validation test suite |

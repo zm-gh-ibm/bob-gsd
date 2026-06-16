@@ -52,7 +52,7 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
 1. Checks prerequisites (`bob`, `python3` — warns, doesn't abort)
 2. Asks whether to install modes **project-scoped** or **globally**
 3. Copies `.gsd/` scaffold, `.bob/rules-*/`, and `custom_modes.yaml` into the target
-4. Appends the `.bob/notes/` gitignore entry (idempotent)
+4. Appends `.gsd/`, `.bob/`, and `.bob/notes/` gitignore entries (idempotent)
 5. Prints next steps
 
 ---
@@ -69,9 +69,6 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
     STATE.schema.md     ← normative schema reference (do not edit)
     CONTEXT.md          ← per-phase plan (written by gsd-planner)
     VERIFY.md           ← verification reports (written by gsd-verifier)
-    modes/
-      yaml/             ← mode YAML definitions (reference; generated)
-      docs/             ← human-readable mode docs (reference; generated)
 
   .bob/
     custom_modes.yaml   ← custom modes Bob loads (the live runtime copy)
@@ -85,7 +82,7 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
     rules-gsd-verifier/ ← verifier guardrails
     rules-plan/         ← plan-mode rules
 
-  .gitignore            ← .bob/notes/ entry appended (idempotent)
+  .gitignore            ← .bob/notes/ + .gsd/ + .bob/ entries appended (idempotent)
 ```
 
 ---
@@ -159,24 +156,25 @@ When merging, the existing file is automatically backed up to `.bak-<timestamp>`
 
 If you can't use the installer, copy these by hand:
 
-1. Copy `.gsd/` into your project root
-2. Copy `.bob/rules-*/` into your project's `.bob/`
-3. Copy `.bob/gsd_modes.yaml` to:
+1. Copy `gsd-setup/template/.gsd/` into your project root as `.gsd/`
+2. Copy `gsd-setup/template/.bob/rules-*/` into your project's `.bob/`
+3. Copy `gsd-setup/template/.bob/gsd_modes.yaml` to:
    - Project: `<target>/.bob/custom_modes.yaml`
    - Global: `~/.bob/custom_modes.yaml` (or Bob's equivalent global config)
-4. Add `.bob/notes/` to your `.gitignore`
+4. Add `.bob/notes/`, `.gsd/`, and `.bob/` to your `.gitignore`
 
 ---
 
 ## Architecture: source of truth
 
 ```
-.bob/gsd_modes.yaml     ← THE source of truth AND the deployed runtime copy (edit this)
+gsd-setup/template/.bob/gsd_modes.yaml     ← THE source of truth (edit this)
         │
         └─ gsd-setup/scripts/deploy-gsd.sh ──► <target>/.bob/custom_modes.yaml
 ```
 
-**Edit `.bob/gsd_modes.yaml` directly.** No generation step is needed.
+**Edit `gsd-setup/template/.bob/gsd_modes.yaml` directly.** No generation step is needed.
+Run `gsd-setup/scripts/gen-modes.sh` to validate mode count and structure.
 
 ---
 
@@ -191,11 +189,28 @@ bob-gsd/
       run-unattended.sh   ← autonomous loop driver (bash)
       run-unattended.ps1  ← autonomous loop driver (PowerShell)
       run-unattended.bat  ← autonomous loop driver (cmd.exe)
-      gen-modes.sh        ← mode validator
+      gen-modes.sh        ← mode validator (thin wrapper)
       gen_modes.py        ← mode validator (python core)
     docs/
       DEPLOY.md           ← this file
-
-  .gsd/                   ← scaffold templates (copied to target projects)
-  .bob/                   ← mode definitions + rules (copied to target projects)
+    template/
+      .bob/               ← mode definitions + rules (source of truth; copied on install)
+        gsd_modes.yaml    ← THE source of truth for all GSD modes
+        rules-agent/
+        rules-ask/
+        rules-gsd-executor/
+        rules-gsd-init/
+        rules-gsd-orchestrator/
+        rules-gsd-planner/
+        rules-gsd-shipper/
+        rules-gsd-verifier/
+        rules-plan/
+      .gsd/               ← scaffold templates (copied to target projects on install)
+        PROJECT.md
+        REQUIREMENTS.md
+        ROADMAP.md
+        STATE.md
+        STATE.schema.md
+        CONTEXT.md
+        VERIFY.md
 ```
