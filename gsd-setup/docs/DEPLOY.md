@@ -19,18 +19,18 @@ or Windows (Git Bash / WSL).
 ## Quick install — one-liner (curl)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh | bash
 ```
 
 **With a target path:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh \
+curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh \
   | bash -s -- ~/path/to/your-project
 ```
 
 **Dry-run first** (no files written):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/install.sh \
+curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh \
   | bash -s -- ~/path/to/your-project --dry-run
 ```
 
@@ -39,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/zack-maz/bob-gsd/main/gsd-setup/ins
 ## Quick install — already cloned
 
 ```bash
-git clone https://github.com/zack-maz/bob-gsd ~/tools/bob-gsd
+git clone https://github.com/zm-gh-ibm/bob-gsd ~/tools/bob-gsd
 ~/tools/bob-gsd/gsd-setup/install.sh ~/path/to/your-project
 ```
 
@@ -195,10 +195,6 @@ bob-gsd/
       gen_modes.py        ← mode validator (python core)
     docs/
       DEPLOY.md           ← this file
-    test/
-      simulate-gates.js   ← state-machine gate simulation
-      validate-loop.js    ← loop script validation suite
-    .gitignore.snippet    ← snippet appended to target .gitignore
 
   .gsd/                   ← scaffold templates (copied to target projects)
   .bob/                   ← mode definitions + rules (copied to target projects)
