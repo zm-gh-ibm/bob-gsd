@@ -9,7 +9,7 @@ autonomously.
 ## The Big Picture
 
 GSD is a **state-machine workflow** for AI-assisted software development. A single file
-on disk — [`.gsd/STATE.md`](.gsd/STATE.md) — is the program counter. Every agent reads
+on disk — [`.planning/STATE.md`](.planning/STATE.md) — is the program counter. Every agent reads
 from it and writes back to it. No agent ever trusts its own memory over what the file
 says.
 
@@ -36,10 +36,10 @@ GSD Orchestrator ──┬──► GSD Planner    (phase_status: discussing)
 
 **One-time project bootstrapper.** Runs an interview (≈10 questions) and writes:
 
-- [`.gsd/PROJECT.md`](.gsd/PROJECT.md) — name, purpose, users, stack, constraints, risks
-- [`.gsd/REQUIREMENTS.md`](.gsd/REQUIREMENTS.md) — feature list with acceptance criteria
-- [`.gsd/ROADMAP.md`](.gsd/ROADMAP.md) — milestone broken into phases
-- [`.gsd/STATE.md`](.gsd/STATE.md) — seeded to `phase_status: discussing`
+- [`.planning/PROJECT.md`](.planning/PROJECT.md) — name, purpose, users, stack, constraints, risks
+- [`.planning/REQUIREMENTS.md`](.planning/REQUIREMENTS.md) — feature list with acceptance criteria
+- [`.planning/ROADMAP.md`](.planning/ROADMAP.md) — milestone broken into phases
+- [`.planning/STATE.md`](.planning/STATE.md) — seeded to `phase_status: discussing`
 
 **Run once, never again.** If these files exist and are populated, do not re-invoke —
 it will overwrite them.
@@ -51,7 +51,7 @@ it will overwrite them.
 **The program counter.** Your primary entry point for every work session after init.
 
 The Orchestrator:
-- Re-reads [`STATE.md`](.gsd/STATE.md) on every single turn (never trusts memory)
+- Re-reads [`STATE.md`](.planning/STATE.md) on every single turn (never trusts memory)
 - Checks for blockers — halts if any are open
 - Emits a one-line routing trace before delegating (e.g. `→ Routing to gsd-executor (phase_status: executing, last_completed_task: 2.1)`)
 - Delegates to the correct specialist
@@ -71,14 +71,14 @@ purely a coordinator.
 
 ### 3. GSD Planner (`gsd-planner`)
 
-**Spec-driven planning agent.** Reads [`REQUIREMENTS.md`](.gsd/REQUIREMENTS.md) and
-[`ROADMAP.md`](.gsd/ROADMAP.md), researches the codebase, and produces a detailed
+**Spec-driven planning agent.** Reads [`REQUIREMENTS.md`](.planning/REQUIREMENTS.md) and
+[`ROADMAP.md`](.planning/ROADMAP.md), researches the codebase, and produces a detailed
 atomic task list.
 
 The Planner:
 - Resolves or escalates `open_decisions` from `STATE.md` before planning
-- Archives the previous phase's [`CONTEXT.md`](.gsd/CONTEXT.md) before overwriting it
-  (saved to `.gsd/phases/{n}/CONTEXT.md`)
+- Archives the previous phase's [`CONTEXT.md`](.planning/CONTEXT.md) before overwriting it
+  (saved to `.planning/phases/{n}/CONTEXT.md`)
 - Numbers every task as `{phase}.{n}` (e.g. `2.1`, `2.2`) — the Executor and
   Orchestrator depend on these IDs
 - Classifies new dependencies as `[OK]`, `[SUS]`, or `[SLOP]` — `[SLOP]` packages
@@ -95,7 +95,7 @@ needs more than 2–3 sentences to describe, it should be split.
 ### 4. GSD Executor (`gsd-executor`)
 
 **Autonomous implementation agent.** Executes the approved plan from
-[`CONTEXT.md`](.gsd/CONTEXT.md) task by task.
+[`CONTEXT.md`](.planning/CONTEXT.md) task by task.
 
 The Executor:
 - Reads `last_completed_task` from `STATE.md` to know where to resume
@@ -116,8 +116,8 @@ The Executor:
 
 The Verifier:
 - Runs the actual test suite (does not rely on code inspection alone)
-- Tests every acceptance criterion from [`REQUIREMENTS.md`](.gsd/REQUIREMENTS.md)
-- Writes a structured [`VERIFY.md`](.gsd/VERIFY.md) report: PASS/FAIL per criterion
+- Tests every acceptance criterion from [`REQUIREMENTS.md`](.planning/REQUIREMENTS.md)
+- Writes a structured [`VERIFY.md`](.planning/VERIFY.md) report: PASS/FAIL per criterion
   with concrete evidence
 - For failures: writes a precise fix plan (exact files, functions, changes) — not vague
   guidance
@@ -134,7 +134,7 @@ The Verifier:
 **Release agent.** Confirms clean verification, creates the PR, and advances state.
 
 The Shipper:
-- Refuses to create a PR if any failures remain in [`VERIFY.md`](.gsd/VERIFY.md)
+- Refuses to create a PR if any failures remain in [`VERIFY.md`](.planning/VERIFY.md)
 - **Presents the PR draft and stops for manual approval before creating it**
 - PR title format: `phase({n}): {phase title} [milestone v{m}]`
 - PR body contains: phase objective, task list with commit SHAs, verification summary
@@ -188,7 +188,7 @@ removes them.
 **When:** `phase_status` transitions from `discussing` → `planned`
 
 **What happens:** The Orchestrator presents the full task list (with `{phase}.{n}` IDs)
-from [`CONTEXT.md`](.gsd/CONTEXT.md). You review, request changes if needed, then
+from [`CONTEXT.md`](.planning/CONTEXT.md). You review, request changes if needed, then
 explicitly say `"approved"`, `"go"`, or equivalent. Saying `"looks good"` or `"sounds
 right"` is **not** treated as approval — the Orchestrator requires an unambiguous token.
 
@@ -263,7 +263,7 @@ recommended default for most teams.
 1. Use the Orchestrator manually for the `discussing → planned` transition (so you
    approve the plan yourself)
 2. Once you send `"approved"`, the Executor runs to completion unattended
-3. Review the Verifier's [`VERIFY.md`](.gsd/VERIFY.md) report
+3. Review the Verifier's [`VERIFY.md`](.planning/VERIFY.md) report
 4. Review the Shipper's PR draft before sending `"go"`
 
 This keeps a human in the loop at the two highest-value decision points (what gets
@@ -343,7 +343,7 @@ When this happens, you will see:
 > "The workflow appears to be stuck — phase {n} has been in `{status}` for 3 consecutive
 > delegations with no task progress."
 
-**Resolution:** read [`STATE.md`](.gsd/STATE.md), read [`CONTEXT.md`](.gsd/CONTEXT.md),
+**Resolution:** read [`STATE.md`](.planning/STATE.md), read [`CONTEXT.md`](.planning/CONTEXT.md),
 identify what is blocking the Executor, resolve it, clear the blocker, and re-invoke.
 
 ---
@@ -393,7 +393,7 @@ identify what is blocking the Executor, resolve it, clear the blocker, and re-in
 ### Adding a new phase to the roadmap
 
 ```
-1. Edit .gsd/ROADMAP.md — add the new phase row and Phase Details section
+1. Edit .planning/ROADMAP.md — add the new phase row and Phase Details section
 2. After the current phase ships, the Orchestrator will see the new phase
    in the roadmap and automatically set it to discussing
 ```
@@ -403,8 +403,8 @@ identify what is blocking the Executor, resolve it, clear the blocker, and re-in
 ### Recovering from a stuck loop
 
 ```
-1. Read .gsd/STATE.md — note the blocker
-2. Read .gsd/CONTEXT.md — find the failing task
+1. Read .planning/STATE.md — note the blocker
+2. Read .planning/CONTEXT.md — find the failing task
 3. Fix whatever is blocking (dependency, env var, config)
 4. Edit STATE.md — set blockers: none
 5. Switch to gsd-orchestrator
@@ -417,14 +417,14 @@ identify what is blocking the Executor, resolve it, clear the blocker, and re-in
 
 | File | Owner | Purpose |
 |---|---|---|
-| [`.gsd/STATE.md`](.gsd/STATE.md) | Orchestrator / all agents | Program counter — the single source of truth |
-| [`.gsd/PROJECT.md`](.gsd/PROJECT.md) | Initializer | Project name, goals, stack, constraints |
-| [`.gsd/REQUIREMENTS.md`](.gsd/REQUIREMENTS.md) | Initializer | Feature list with acceptance criteria |
-| [`.gsd/ROADMAP.md`](.gsd/ROADMAP.md) | Initializer / Shipper | Milestone → phase map; Shipper updates status column |
-| [`.gsd/CONTEXT.md`](.gsd/CONTEXT.md) | Planner | Current phase task list + implementation decisions |
-| [`.gsd/VERIFY.md`](.gsd/VERIFY.md) | Verifier | Pass/fail report per acceptance criterion |
-| [`.gsd/phases/{n}/CONTEXT.md`](.gsd/) | Planner (archive) | Archived plan from phase n — never overwritten |
-| [`.gsd/STATE.schema.md`](.gsd/STATE.schema.md) | Reference | Canonical format spec for STATE.md |
+| [`.planning/STATE.md`](.planning/STATE.md) | Orchestrator / all agents | Program counter — the single source of truth |
+| [`.planning/PROJECT.md`](.planning/PROJECT.md) | Initializer | Project name, goals, stack, constraints |
+| [`.planning/REQUIREMENTS.md`](.planning/REQUIREMENTS.md) | Initializer | Feature list with acceptance criteria |
+| [`.planning/ROADMAP.md`](.planning/ROADMAP.md) | Initializer / Shipper | Milestone → phase map; Shipper updates status column |
+| [`.planning/CONTEXT.md`](.planning/CONTEXT.md) | Planner | Current phase task list + implementation decisions |
+| [`.planning/VERIFY.md`](.planning/VERIFY.md) | Verifier | Pass/fail report per acceptance criterion |
+| [`.planning/phases/{n}/CONTEXT.md`](.planning/) | Planner (archive) | Archived plan from phase n — never overwritten |
+| [`.planning/STATE.schema.md`](.planning/STATE.schema.md) | Reference | Canonical format spec for STATE.md |
 
 ---
 
@@ -449,5 +449,5 @@ identify what is blocking the Executor, resolve it, clear the blocker, and re-in
 | Approve a plan | `"Approved."` / `"Go."` / `"Proceed."` |
 | Approve a PR | `"Go."` / `"Ship it."` / `"Approved."` |
 | Re-plan current phase | Set `phase_status: discussing` → `"Advance the GSD workflow one step."` |
-| Check current state | Read `.gsd/STATE.md` |
+| Check current state | Read `.planning/STATE.md` |
 | Run autonomously | `gsd-setup/scripts/run-unattended.sh` |

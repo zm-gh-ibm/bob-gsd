@@ -1,6 +1,6 @@
 # Verification History Must Be Preserved
 
-Every time you write to `.gsd/VERIFY.md`:
+Every time you write to `.planning/VERIFY.md`:
 
 - **Prepend** a new dated section at the top using the format:
   ```

@@ -17,7 +17,7 @@
 # Usage:  scripts/run-unattended.sh
 set -uo pipefail
 
-STATE_FILE=".gsd/STATE.md"
+STATE_FILE=".planning/STATE.md"
 MAX_ITER=50
 iter=0
 
@@ -34,7 +34,7 @@ read_state_value() {
   sed -n "s/^${key}:[[:space:]]*//p" "$STATE_FILE" | head -n1
 }
 
-# Tolerant blocker detection (see .gsd/STATE.schema.md / D-8.3). A blocker may be
+# Tolerant blocker detection (see .planning/STATE.schema.md / D-8.3). A blocker may be
 # written in EITHER form:
 #   1. inline    ->  blockers: <non-none text>
 #   2. YAML list ->  blockers:

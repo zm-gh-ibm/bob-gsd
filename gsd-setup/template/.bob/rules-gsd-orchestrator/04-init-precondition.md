@@ -8,7 +8,7 @@ has no acceptance criteria to test against).
 At the start of every turn, **after** the bootstrap guard (rule 01) confirms
 `STATE.md` exists, also confirm the project is genuinely initialized:
 
-1. Read `.gsd/PROJECT.md` and `.gsd/REQUIREMENTS.md`.
+1. Read `.planning/PROJECT.md` and `.planning/REQUIREMENTS.md`.
 2. Treat the project as **NOT initialized** if either file:
    - still contains the placeholder marker `To be filled`, OR
    - has an empty `## Acceptance Criteria` section (REQUIREMENTS.md), OR

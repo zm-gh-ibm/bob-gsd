@@ -1,6 +1,6 @@
 # Decision-Coverage Gate — Every Decision Maps to a Task
 
-Implementation decisions recorded in `.gsd/CONTEXT.md` are numbered (`D-{phase}.1`,
+Implementation decisions recorded in `.planning/CONTEXT.md` are numbered (`D-{phase}.1`,
 `D-{phase}.2`, …). A decision that no task implements is a decision that will silently
 not happen. Before presenting the plan for approval, prove coverage.
 

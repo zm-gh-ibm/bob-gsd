@@ -4,7 +4,7 @@ When researching the codebase, you will likely encounter improvements or feature
 are outside the current phase's scope. Do NOT silently ignore them.
 
 - Add a dedicated **"Out of Scope (this phase)"** section at the bottom of
-  `.gsd/CONTEXT.md` listing each item, so the user can decide whether to add them to
+  `.planning/CONTEXT.md` listing each item, so the user can decide whether to add them to
   a later phase.
 - Never include out-of-scope items in the task list — they must not be committed to the
   Executor implicitly.

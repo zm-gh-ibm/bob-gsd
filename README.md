@@ -40,10 +40,10 @@ gsd-setup/install.sh ~/path/to/your-project
 
 Running the installer copies into your target project:
 
-- **`.gsd/`** — workflow state files (`PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, etc.)
+- **`.planning/`** — workflow state files (`PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, etc.)
 - **`.bob/rules-*/`** — GSD mode behavioral guardrails
 - **`.bob/custom_modes.yaml`** — GSD mode definitions Bob loads at runtime
-- **`.gitignore`** — `.gsd/`, `.bob/`, and `.bob/notes/` entries appended (idempotent)
+- **`.gitignore`** — `.planning/`, `.bob/`, and `.bob/notes/` entries appended (idempotent)
 
 See [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) for full details.
 
@@ -53,7 +53,7 @@ See [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) for full details.
 
 1. `cd` into your target project
 2. Open a Bob session
-3. Switch to **GSD Initializer** mode — Bob will interview you and write all `.gsd/` files
+3. Switch to **GSD Initializer** mode — Bob will interview you and write all `.planning/` files
 4. Switch to **GSD Orchestrator** and send: `"Advance the GSD workflow one step."`
 
 ---
@@ -87,7 +87,7 @@ bob-gsd/
       .bob/               ← GSD mode definitions + rules (source of truth; copied on install)
         custom_modes.yaml    ← THE source of truth for GSD modes (edit this)
         rules-*/          ← per-mode behavioral guardrails
-      .gsd/               ← scaffold templates (copied into target projects on install)
+      .planning/               ← scaffold templates (copied into target projects on install)
 ```
 
 ---

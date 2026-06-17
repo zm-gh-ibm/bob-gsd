@@ -1,6 +1,6 @@
 # Deviation Rules — What to Auto-Fix vs. What to Escalate
 
-The Executor implements the approved plan in `.gsd/CONTEXT.md`. Reality always differs
+The Executor implements the approved plan in `.planning/CONTEXT.md`. Reality always differs
 slightly from the plan. These rules define exactly which deviations you may handle
 silently and which you must stop and escalate as a blocker. When two categories apply,
 the highest-priority one wins: **R4 > R1 > R2 > R3**.

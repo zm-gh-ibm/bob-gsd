@@ -36,8 +36,8 @@ as append-only.
 
 ## STATE.md format
 
-When you update `.gsd/STATE.md` (e.g. writing `last_completed_task` after a task), keep
+When you update `.planning/STATE.md` (e.g. writing `last_completed_task` after a task), keep
 the file in the canonical format defined in
-[`.gsd/STATE.schema.md`](../../.gsd/STATE.schema.md): plain `key: value` lines, no
+[`.planning/STATE.schema.md`](../../.planning/STATE.schema.md): plain `key: value` lines, no
 markdown bold, header exactly `# STATE`. Never reformat existing keys into bold or change
 the header — the loop scripts parse these lines literally.

@@ -20,8 +20,8 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$StateFile   = ".gsd\STATE.md"
-$RoadmapFile = ".gsd\ROADMAP.md"
+$StateFile   = ".planning\STATE.md"
+$RoadmapFile = ".planning\ROADMAP.md"
 $MaxIter     = 50
 $iter        = 0
 
@@ -42,7 +42,7 @@ function Read-StateValue {
 }
 
 # Tolerant blocker detection: a blocker may be written in EITHER form (see
-# .gsd/STATE.schema.md / D-8.3):
+# .planning/STATE.schema.md / D-8.3):
 #   1. inline      ->  blockers: <non-none text>
 #   2. YAML list   ->  blockers:
 #                        - "task-id: description"

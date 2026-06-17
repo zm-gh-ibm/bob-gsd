@@ -2,11 +2,11 @@
 
 The Executor must never modify the following files under any circumstances:
 
-- `.gsd/REQUIREMENTS.md`
-- `.gsd/ROADMAP.md`
-- `.gsd/PROJECT.md`
-- `.gsd/CONTEXT.md`
-- `.gsd/VERIFY.md`
+- `.planning/REQUIREMENTS.md`
+- `.planning/ROADMAP.md`
+- `.planning/PROJECT.md`
+- `.planning/CONTEXT.md`
+- `.planning/VERIFY.md`
 
 If implementing a task would require changing one of these files (e.g., a requirement
 changed mid-execution), STOP and record a blocker rather than editing the file. The

@@ -1,7 +1,7 @@
 # Run Tests After Every Commit
 
 After each atomic commit, run the project's test suite (as documented in
-`.gsd/PROJECT.md` or detected from the repo: `npm test`, `pytest`, `go test ./...`,
+`.planning/PROJECT.md` or detected from the repo: `npm test`, `pytest`, `go test ./...`,
 etc.).
 
 - If tests pass: update `last_completed_task` in `STATE.md` and proceed to the next

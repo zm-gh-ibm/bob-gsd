@@ -1,7 +1,7 @@
 # PR Body Must Include Verification Cycle Count
 
 Include the number of verification cycles this phase required in the PR body. Extract
-this from `.gsd/VERIFY.md` by counting dated section headers for the current phase.
+this from `.planning/VERIFY.md` by counting dated section headers for the current phase.
 
 Format in the PR body:
 ```

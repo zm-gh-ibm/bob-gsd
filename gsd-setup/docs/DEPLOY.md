@@ -51,8 +51,8 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
 
 1. Checks prerequisites (`bob`, `python3` — warns, doesn't abort)
 2. Asks whether to install modes **project-scoped** or **globally**
-3. Copies `.gsd/` scaffold, `.bob/rules-*/`, and `custom_modes.yaml` into the target
-4. Appends `.gsd/`, `.bob/`, and `.bob/notes/` gitignore entries (idempotent)
+3. Copies `.planning/` scaffold, `.bob/rules-*/`, and `custom_modes.yaml` into the target
+4. Appends `.planning/`, `.bob/`, and `.bob/notes/` gitignore entries (idempotent)
 5. Prints next steps
 
 ---
@@ -61,7 +61,7 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
 
 ```
 <target>/
-  .gsd/
+  .planning/
     PROJECT.md          ← fill in during gsd-init interview
     REQUIREMENTS.md     ← fill in during gsd-init interview
     ROADMAP.md          ← fill in during gsd-init interview
@@ -82,7 +82,7 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
     rules-gsd-verifier/ ← verifier guardrails
     rules-plan/         ← plan-mode rules
 
-  .gitignore            ← .bob/notes/ + .gsd/ + .bob/ entries appended (idempotent)
+  .gitignore            ← .bob/notes/ + .planning/ + .bob/ entries appended (idempotent)
 ```
 
 ---
@@ -108,7 +108,7 @@ Choose **global** if you deploy GSD to multiple projects and want consistent mod
 cd <target-project>
 # Open a Bob session in that directory, then:
 # 1. Switch to "GSD Initializer" mode
-# 2. Bob will interview you (≈10 questions) and write .gsd/{PROJECT,REQUIREMENTS,ROADMAP,STATE}.md
+# 2. Bob will interview you (≈10 questions) and write .planning/{PROJECT,REQUIREMENTS,ROADMAP,STATE}.md
 # 3. Switch to "GSD Orchestrator" mode
 # 4. Send: "Advance the GSD workflow one step."
 ```
@@ -156,12 +156,12 @@ When merging, the existing file is automatically backed up to `.bak-<timestamp>`
 
 If you can't use the installer, copy these by hand:
 
-1. Copy `gsd-setup/template/.gsd/` into your project root as `.gsd/`
+1. Copy `gsd-setup/template/.planning/` into your project root as `.planning/`
 2. Copy `gsd-setup/template/.bob/rules-*/` into your project's `.bob/`
 3. Copy `gsd-setup/template/.bob/custom_modes.yaml` to:
    - Project: `<target>/.bob/custom_modes.yaml`
    - Global: `~/.bob/custom_modes.yaml` (or Bob's equivalent global config)
-4. Add `.bob/notes/`, `.gsd/`, and `.bob/` to your `.gitignore`
+4. Add `.bob/notes/`, `.planning/`, and `.bob/` to your `.gitignore`
 
 ---
 
@@ -205,7 +205,7 @@ bob-gsd/
         rules-gsd-shipper/
         rules-gsd-verifier/
         rules-plan/
-      .gsd/               ← scaffold templates (copied to target projects on install)
+      .planning/               ← scaffold templates (copied to target projects on install)
         PROJECT.md
         REQUIREMENTS.md
         ROADMAP.md

@@ -8,7 +8,7 @@ independently:
    output.
 2. **Unit / integration tests** — run the full test suite. Record pass/fail with
    test count and any failure messages.
-3. **Acceptance criterion check** — for each item in `.gsd/REQUIREMENTS.md` scoped to
+3. **Acceptance criterion check** — for each item in `.planning/REQUIREMENTS.md` scoped to
    this phase, record PASS / FAIL / N/A with concrete evidence (file + line, test
    name, or command output).
 

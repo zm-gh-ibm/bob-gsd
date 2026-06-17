@@ -10,7 +10,7 @@ single task before you must stop.
 2. If it still fails, attempt again — counting each distinct attempt.
 3. After the **3rd** failed attempt on the same task, **STOP**. Do not keep trying
    variations hoping one sticks — that burns context and often makes things worse.
-4. Record a blocker in `.gsd/STATE.md`:
+4. Record a blocker in `.planning/STATE.md`:
    `blockers: - "{task id}: 3 auto-fix attempts failed — {symptom}; last error: {short}"`
 5. Report to the Orchestrator and halt. The task stays incomplete;
    `last_completed_task` is NOT advanced.

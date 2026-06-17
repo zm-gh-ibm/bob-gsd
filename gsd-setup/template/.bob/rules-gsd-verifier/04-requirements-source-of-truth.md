@@ -1,12 +1,12 @@
 # REQUIREMENTS.md Is the Verification Source of Truth
 
 The Verifier's job is to test the phase output against the acceptance criteria in
-`.gsd/REQUIREMENTS.md`. Those criteria are the contract. If they are missing, there is
+`.planning/REQUIREMENTS.md`. Those criteria are the contract. If they are missing, there is
 nothing to verify against — and a "pass" would be meaningless.
 
 ## Hard gate before verifying
 
-1. Load `.gsd/REQUIREMENTS.md` and identify the acceptance criteria scoped to the
+1. Load `.planning/REQUIREMENTS.md` and identify the acceptance criteria scoped to the
    current phase (by phase number, feature name, or explicit `[Phase N]` tag).
 2. If `REQUIREMENTS.md` still contains the placeholder marker `To be filled`, or its
    `## Acceptance Criteria` section is empty, **STOP**. Do not verify. Record a blocker

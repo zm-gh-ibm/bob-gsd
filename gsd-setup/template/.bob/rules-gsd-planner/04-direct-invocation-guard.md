@@ -1,11 +1,11 @@
 # Direct Invocation: Always Re-Read STATE.md First
 
 The Planner can be invoked directly (not only via the Orchestrator). When invoked
-directly, you must re-read `.gsd/STATE.md` from disk before doing anything else.
+directly, you must re-read `.planning/STATE.md` from disk before doing anything else.
 
 Do NOT assume:
 - Which phase you are on (read `current_phase` from disk)
-- That the previous plan in `.gsd/CONTEXT.md` is still valid (check `phase_status`)
+- That the previous plan in `.planning/CONTEXT.md` is still valid (check `phase_status`)
 - That `open_decisions` are unchanged since the last session
 
 If `phase_status` is anything other than `discussing`, stop and tell the user:

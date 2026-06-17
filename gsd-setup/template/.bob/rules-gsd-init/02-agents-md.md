@@ -1,6 +1,6 @@
 # Seed AGENTS.md When Missing
 
-After writing all four `.gsd/` files, check whether `AGENTS.md` exists at the project
+After writing all four `.planning/` files, check whether `AGENTS.md` exists at the project
 root.
 
 - If it does **not** exist, create a minimal `AGENTS.md` that documents: repo nature,

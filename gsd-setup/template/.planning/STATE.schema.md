@@ -1,6 +1,6 @@
 # STATE.md — Canonical Schema
 
-This is the single normative reference for the on-disk format of `.gsd/STATE.md`, the
+This is the single normative reference for the on-disk format of `.planning/STATE.md`, the
 program counter for the GSD state machine. Every mode that writes `STATE.md`
 (`gsd-init`, `gsd-orchestrator`, `gsd-executor`, `gsd-shipper`) MUST conform to this
 format exactly. The deterministic loop scripts (`scripts/run-unattended.{ps1,bat}`)

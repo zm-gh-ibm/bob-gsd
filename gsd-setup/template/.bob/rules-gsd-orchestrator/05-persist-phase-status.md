@@ -1,7 +1,7 @@
 # Persist phase_status Before Ending the Turn
 
 The Orchestrator is the program counter. After it delegates to a sub-mode, the resulting
-`phase_status` MUST be written to `.gsd/STATE.md` **before the turn ends**. If you delegate
+`phase_status` MUST be written to `.planning/STATE.md` **before the turn ends**. If you delegate
 but leave `phase_status` on the sub-mode's *input* value, the counter never advances — and
 a blind re-invocation (which is exactly how the unattended loop drives you) re-runs the
 sub-mode you just finished, spinning instead of progressing.
@@ -48,5 +48,5 @@ Orchestrator's last act and the sub-mode persists the status itself.
 ## Format
 
 Write `STATE.md` in the canonical format defined in
-[`.gsd/STATE.schema.md`](../../.gsd/STATE.schema.md): plain `key: value` lines (no markdown
+[`.planning/STATE.schema.md`](../../.planning/STATE.schema.md): plain `key: value` lines (no markdown
 bold), header exactly `# STATE`. `phase_status` is always a single-line scalar.

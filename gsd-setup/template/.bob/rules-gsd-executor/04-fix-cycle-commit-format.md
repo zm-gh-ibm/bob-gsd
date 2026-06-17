@@ -1,7 +1,7 @@
 # Fix-Cycle Commit Message Format
 
-When actioning fix items from a `.gsd/VERIFY.md` fix plan (as opposed to tasks from
-`.gsd/CONTEXT.md`), use this commit message format:
+When actioning fix items from a `.planning/VERIFY.md` fix plan (as opposed to tasks from
+`.planning/CONTEXT.md`), use this commit message format:
 
 ```
 fix({phase}.{fix_n}): {concise description}

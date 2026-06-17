@@ -1,7 +1,7 @@
 # Seed STATE.md Exactly Per the Canonical Schema
 
-When `gsd-init` creates `.gsd/STATE.md`, it MUST write the file **exactly** in the
-canonical format defined in [`.gsd/STATE.schema.md`](../../.gsd/STATE.schema.md). The
+When `gsd-init` creates `.planning/STATE.md`, it MUST write the file **exactly** in the
+canonical format defined in [`.planning/STATE.schema.md`](../../.planning/STATE.schema.md). The
 loop scripts (`scripts/run-unattended.{ps1,bat}`) parse `STATE.md` with line-start key
 matchers (`^phase_status:`, `findstr /b "blockers:"`); any cosmetic deviation silently
 breaks termination and blocker detection.
@@ -32,5 +32,5 @@ blockers: none
 
 This pins the format at the source. If you ever find yourself decorating a key with
 bold, an alternate header, or inlining `open_decisions` — stop and re-read
-`.gsd/STATE.schema.md`. All downstream writers (orchestrator, executor, shipper)
+`.planning/STATE.schema.md`. All downstream writers (orchestrator, executor, shipper)
 conform to the same schema.

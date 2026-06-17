@@ -4,8 +4,8 @@
 #   Installs the GSD workflow into a target project.
 #
 #   What it does:
-#     1. Copies .gsd/ scaffold (STATE, REQUIREMENTS, ROADMAP, PROJECT, CONTEXT,
-#        VERIFY, STATE.schema, modes/) into <target>/.gsd/
+#     1. Copies .planning/ scaffold (STATE, REQUIREMENTS, ROADMAP, PROJECT, CONTEXT,
+#        VERIFY, STATE.schema, modes/) into <target>/.planning/
 #     2. Copies .bob/rules-*/ into <target>/.bob/
 #     3. Installs custom_modes.yaml to project scope (.bob/) or global scope
 #        (~/.bob/) — you choose interactively
@@ -174,7 +174,7 @@ info "Modes will be installed ${BOLD}${MODES_SCOPE}-scoped${RESET} → $MODES_DE
 # ── confirm ───────────────────────────────────────────────────────────────────
 echo
 echo -e "${BOLD}  The following will be written:${RESET}"
-echo "    $TARGET/.gsd/                 (workflow state files)"
+echo "    $TARGET/.planning/                 (workflow state files)"
 echo "    $TARGET/.bob/rules-*/         (mode behavioral rules)"
 echo "    $MODES_DEST                   (custom modes)"
 echo "    $TARGET/.gitignore            (appended: .bob/notes/ entry)"
@@ -209,11 +209,11 @@ do_cp() {
   fi
 }
 
-# ── step 3: install .gsd/ scaffold ───────────────────────────────────────────
-step "3/5  Installing .gsd/ scaffold"
+# ── step 3: install .planning/ scaffold ───────────────────────────────────────────
+step "3/5  Installing .planning/ scaffold"
 
-GSD_SCAFFOLD="$GSD_REPO/gsd-setup/template/.gsd"
-GSD_DEST="$TARGET/.gsd"
+GSD_SCAFFOLD="$GSD_REPO/gsd-setup/template/.planning"
+GSD_DEST="$TARGET/.planning"
 
 # Guard: don't overwrite an already-initialized project (has real content in PROJECT.md)
 SKIP_SCAFFOLD=0
@@ -221,8 +221,8 @@ if [ -f "$GSD_DEST/PROJECT.md" ]; then
   existing=$(grep -v "^#\|^$\|<!--" "$GSD_DEST/PROJECT.md" 2>/dev/null | head -3)
   if [ -n "$existing" ]; then
     warn "$GSD_DEST/PROJECT.md exists and appears to have content."
-    warn "Skipping .gsd/ scaffold to protect existing project state."
-    warn "Delete .gsd/PROJECT.md manually to force a fresh install."
+    warn "Skipping .planning/ scaffold to protect existing project state."
+    warn "Delete .planning/PROJECT.md manually to force a fresh install."
     SKIP_SCAFFOLD=1
   fi
 fi
@@ -251,7 +251,7 @@ if [ "$SKIP_SCAFFOLD" -eq 0 ]; then
     info "  modes/ (yaml + docs)"
   fi
 
-  success ".gsd/ scaffold installed"
+  success ".planning/ scaffold installed"
 fi
 
 # ── step 4: install .bob/rules-*/ ────────────────────────────────────────────

@@ -16,8 +16,8 @@
 
 setlocal EnableDelayedExpansion
 
-set STATE_FILE=.gsd\STATE.md
-set ROADMAP_FILE=.gsd\ROADMAP.md
+set STATE_FILE=.planning\STATE.md
+set ROADMAP_FILE=.planning\ROADMAP.md
 set MAX_ITER=50
 set ITER=0
 
@@ -34,7 +34,7 @@ echo.
 if !ITER! GEQ %MAX_ITER% (
     echo.
     echo ABORTED: Safety cap of %MAX_ITER% iterations reached.
-    echo Check .gsd/STATE.md to see where the workflow stopped.
+    echo Check .planning/STATE.md to see where the workflow stopped.
     exit /b 1
 )
 
@@ -78,7 +78,7 @@ echo ------------------------------------------------------------
 :: --- Blocker check (tolerant: inline OR YAML-list form) ---
 if "!BLOCKED!"=="1" (
     echo.
-    echo STOPPED: Blocker detected -- check .gsd/STATE.md
+    echo STOPPED: Blocker detected -- check .planning/STATE.md
     echo Blocker value: !BLOCKER_DETAIL!
     exit /b 1
 )
