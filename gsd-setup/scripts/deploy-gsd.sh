@@ -9,7 +9,9 @@
 #     2. Copies .bob/rules-*/ into <target>/.bob/
 #     3. Installs custom_modes.yaml to project scope (.bob/) or global scope
 #        (~/.bob/) — you choose interactively
-#     4. Appends .gitignore.snippet entries to <target>/.gitignore (idempotent)
+#     4. Generates Bob-native slash commands from GSD skills and installs them
+#        to project scope (.bob/commands/) or global scope (~/.bob/commands/)
+#     5. Appends .gitignore.snippet entries to <target>/.gitignore (idempotent)
 #
 #   Requirements: bash 3.2+, python3, bob on PATH (optional — warned if absent)
 #   Platforms:    macOS, Linux, Windows (Git Bash / WSL)
@@ -17,8 +19,9 @@
 #   Usage:
 #     gsd-setup/scripts/deploy-gsd.sh [<target-project-path>] [--dry-run] [--global]
 #
-#     --global   Install custom_modes.yaml to ~/.bob/ (global scope) instead of
-#                .bob/ (project scope). Useful for non-interactive / CI installs.
+#     --global   Install custom_modes.yaml and slash commands to ~/.bob/ (global
+#                scope) instead of .bob/ (project scope). Useful for non-interactive
+#                / CI installs.
 #
 #   Or via the one-liner bootstrapper:
 #     gsd-setup/install.sh [<target-project-path>] [--dry-run] [--global]
@@ -272,7 +275,7 @@ done
 success ".bob/rules-*/ installed"
 
 # ── step 5a: install custom_modes.yaml ─────────────────────────────────────────
-step "5/5  Installing custom modes ($MODES_SCOPE)"
+step "5/6  Installing custom modes ($MODES_SCOPE)"
 
 MODES_SRC="$GSD_REPO/gsd-setup/template/.bob/custom_modes.yaml"
 
@@ -373,7 +376,41 @@ else
   success "Modes installed → $MODES_DEST"
 fi
 
-# ── step 5b: .gitignore ───────────────────────────────────────────────────────
+# ── step 6: generate + install Bob-native slash commands ─────────────────────
+step "6/7  Installing Bob-native slash commands ($MODES_SCOPE)"
+
+GEN_SCRIPT="$GSD_REPO/gsd-setup/scripts/gen-bob-commands.py"
+SKILLS_DIR="$HOME/.claude/skills"
+
+if [ "$MODES_SCOPE" = "global" ]; then
+  COMMANDS_DEST="$HOME/.bob/commands"
+else
+  COMMANDS_DEST="$TARGET/.bob/commands"
+fi
+
+if [ ! -f "$GEN_SCRIPT" ]; then
+  warn "gen-bob-commands.py not found at $GEN_SCRIPT — skipping slash command install."
+elif [ "$HAVE_PYTHON" -eq 0 ]; then
+  warn "python3 not available — skipping slash command generation."
+  warn "Run manually: python3 $GEN_SCRIPT --out-dir $COMMANDS_DEST"
+elif [ ! -d "$SKILLS_DIR" ]; then
+  warn "Skills dir not found: $SKILLS_DIR"
+  warn "Slash commands require GSD skills installed in ~/.claude/skills/"
+  warn "This is normal for fresh installs — run the GSD update command later."
+else
+  SKILL_COUNT=$(ls "$SKILLS_DIR" | wc -l | tr -d ' ')
+  info "Generating $SKILL_COUNT Bob-native slash commands → $COMMANDS_DEST"
+  if [ "$DRY_RUN" -eq 0 ]; then
+    python3 "$GEN_SCRIPT" --skills-dir "$SKILLS_DIR" --out-dir "$COMMANDS_DEST"
+    success "Slash commands installed → $COMMANDS_DEST"
+  else
+    echo "    [dry] python3 $GEN_SCRIPT --skills-dir $SKILLS_DIR --out-dir $COMMANDS_DEST"
+  fi
+fi
+
+# ── step 7: .gitignore ───────────────────────────────────────────────────────
+step "7/7  Updating .gitignore"
+
 GITIGNORE="$TARGET/.gitignore"
 SNIPPET_MARKER="# GSD — bob notes"
 
@@ -406,13 +443,13 @@ echo -e "${BOLD}  Next steps:${RESET}"
 echo "    1. cd $TARGET"
 echo "    2. Open a Bob session in that directory"
 if [ "$MODES_SCOPE" = "global" ]; then
-  echo "    3. Modes are available globally — no further setup needed"
+  echo "    3. Modes + slash commands available globally — type / to see /gsd-* commands"
 else
   echo "    3. Bob will load modes from .bob/custom_modes.yaml automatically"
+  echo "       Slash commands available in this project — type / to see /gsd-* commands"
 fi
 echo "    4. Switch to 'GSD Initializer' mode and run the project interview"
-echo "    5. After init, switch to 'GSD Orchestrator' and send:"
-echo "       \"Advance the GSD workflow one step.\""
+echo "    5. After init, use /gsd-progress to advance the workflow"
 echo
 echo "  To run unattended (after init + planning approval):"
 echo "    gsd-setup/scripts/run-unattended.sh   (from the target project directory)"
