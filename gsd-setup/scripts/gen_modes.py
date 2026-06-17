@@ -2,11 +2,11 @@
 """
 gen_modes.py
   Validates the single source of truth:
-    gsd-setup/template/.bob/gsd_modes.yaml
+    gsd-setup/template/.bob/custom_modes.yaml
 
   This file lives at <repo>/gsd-setup/scripts/gen_modes.py
   REPO_ROOT resolves to <repo>/ (two levels up from this script).
-  SOURCE is the template copy at gsd-setup/template/.bob/gsd_modes.yaml.
+  SOURCE is the template copy at gsd-setup/template/.bob/custom_modes.yaml.
 
   Usage:
     python3 gsd-setup/scripts/gen_modes.py [--dry-run]
@@ -20,7 +20,7 @@ from pathlib import Path
 # parent.parent      = <repo>/gsd-setup/
 # parent.parent.parent = <repo>/
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-SOURCE    = REPO_ROOT / "gsd-setup/template/.bob/gsd_modes.yaml"
+SOURCE    = REPO_ROOT / "gsd-setup/template/.bob/custom_modes.yaml"
 BOB_DIR   = REPO_ROOT / "gsd-setup/template/.bob"
 
 dry_run = "--dry-run" in sys.argv
@@ -98,8 +98,8 @@ raw = SOURCE.read_text()
 mode_blocks = re.split(r"(?=^  - slug:)", raw, flags=re.MULTILINE)[1:]
 print(f"Found {len(mode_blocks)} modes in {SOURCE.relative_to(REPO_ROOT)}")
 print(f"Source of truth: {SOURCE.relative_to(REPO_ROOT)}")
-print(f"\ngsd-setup/template/.bob/gsd_modes.yaml is the source of truth.")
-print(f"deploy-gsd.sh copies it to <target>/.bob/gsd_modes.yaml on install.")
+print(f"\ngsd-setup/template/.bob/custom_modes.yaml is the source of truth.")
+print(f"deploy-gsd.sh copies it to <target>/.bob/custom_modes.yaml on install.")
 print(f"Edit it directly — no generation step needed.")
 
 print(f"\nDone. {len(mode_blocks)} modes available.")
