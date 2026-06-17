@@ -54,16 +54,18 @@ fi
 # ── parse args ────────────────────────────────────────────────────────────────
 TARGET=""
 DRY_RUN_FLAG=""
+GLOBAL_FLAG=""
 
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN_FLAG="--dry-run" ;;
+    --global)  GLOBAL_FLAG="--global" ;;
     -*) error "Unknown flag: $arg" ;;
     *)
       if [ -z "$TARGET" ]; then
         TARGET="$arg"
       else
-        error "Too many arguments. Usage: install.sh [<target-path>] [--dry-run]"
+        error "Too many arguments. Usage: install.sh [<target-path>] [--dry-run] [--global]"
       fi
       ;;
   esac
@@ -94,8 +96,13 @@ else
 
     # Offer to pull latest
     if command -v git &>/dev/null; then
-      echo
-      read -r -p "  Pull latest changes? [Y/n] " pull_answer
+      if [ -t 0 ]; then
+        echo
+        read -r -p "  Pull latest changes? [Y/n] " pull_answer
+      else
+        pull_answer="y"
+        info "Non-interactive install — pulling latest automatically"
+      fi
       case "${pull_answer:-y}" in
         [nN]) info "Skipping pull." ;;
         *)
@@ -151,6 +158,7 @@ else
   DEPLOY_ARGS+=("$ORIGINAL_PWD")
 fi
 [ -n "$DRY_RUN_FLAG" ] && DEPLOY_ARGS+=("$DRY_RUN_FLAG")
+[ -n "$GLOBAL_FLAG"  ] && DEPLOY_ARGS+=("$GLOBAL_FLAG")
 
 chmod +x "$DEPLOY_SCRIPT"
 exec "$DEPLOY_SCRIPT" "${DEPLOY_ARGS[@]}"

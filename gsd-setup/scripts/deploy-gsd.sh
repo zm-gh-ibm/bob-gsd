@@ -15,10 +15,13 @@
 #   Platforms:    macOS, Linux, Windows (Git Bash / WSL)
 #
 #   Usage:
-#     gsd-setup/scripts/deploy-gsd.sh [<target-project-path>] [--dry-run]
+#     gsd-setup/scripts/deploy-gsd.sh [<target-project-path>] [--dry-run] [--global]
+#
+#     --global   Install gsd_modes.yaml to ~/.bob/ (global scope) instead of
+#                .bob/ (project scope). Useful for non-interactive / CI installs.
 #
 #   Or via the one-liner bootstrapper:
-#     gsd-setup/install.sh [<target-project-path>] [--dry-run]
+#     gsd-setup/install.sh [<target-project-path>] [--dry-run] [--global]
 #
 set -euo pipefail
 
@@ -44,16 +47,18 @@ esac
 # ── parse args ────────────────────────────────────────────────────────────────
 TARGET=""
 DRY_RUN=0
+FORCE_GLOBAL=0
 
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=1 ;;
+    --global)  FORCE_GLOBAL=1 ;;
     -*) error "Unknown flag: $arg" ;;
     *)
       if [ -z "$TARGET" ]; then
         TARGET="$arg"
       else
-        error "Too many arguments. Usage: deploy-gsd.sh [<target-path>] [--dry-run]"
+        error "Too many arguments. Usage: deploy-gsd.sh [<target-path>] [--dry-run] [--global]"
       fi
       ;;
   esac
@@ -138,7 +143,16 @@ echo
 echo "    [2] Global          — available in every Bob project"
 echo "        Writes to: ~/.bob/gsd_modes.yaml"
 echo
-read -r -p "  Choice [1/2]: " scope_choice
+
+if [ "$FORCE_GLOBAL" -eq 1 ]; then
+  scope_choice="2"
+  info "Using global scope (--global flag set)"
+elif [ -t 0 ]; then
+  read -r -p "  Choice [1/2]: " scope_choice
+else
+  scope_choice="1"
+  info "Non-interactive install — defaulting to project-scoped (pass --global to override)"
+fi
 
 case "$scope_choice" in
   2)
@@ -162,11 +176,16 @@ echo "    $TARGET/.bob/rules-*/         (mode behavioral rules)"
 echo "    $MODES_DEST                   (custom modes)"
 echo "    $TARGET/.gitignore            (appended: .bob/notes/ entry)"
 echo
-read -r -p "  Proceed? [y/N] " confirm
-case "$confirm" in
-  [yY]|[yY][eE][sS]) ;;
-  *) echo "  Aborted."; exit 0 ;;
-esac
+
+if [ -t 0 ]; then
+  read -r -p "  Proceed? [y/N] " confirm
+  case "$confirm" in
+    [yY]|[yY][eE][sS]) ;;
+    *) echo "  Aborted."; exit 0 ;;
+  esac
+else
+  info "Non-interactive install — proceeding automatically"
+fi
 
 # ── helper: dry-aware operations ──────────────────────────────────────────────
 do_mkdir() {

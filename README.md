@@ -23,6 +23,12 @@ curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/in
   | bash -s -- ~/path/to/your-project --dry-run
 ```
 
+Install modes globally (available in every Bob project) instead of project-scoped:
+```bash
+curl -fsSL https://raw.githubusercontent.com/zm-gh-ibm/bob-gsd/main/gsd-setup/install.sh \
+  | bash -s -- ~/path/to/your-project --global
+```
+
 Already cloned this repo?
 ```bash
 gsd-setup/install.sh ~/path/to/your-project
