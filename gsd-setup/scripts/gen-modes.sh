@@ -6,7 +6,7 @@
 #     gsd-setup/template/.bob/gsd_modes.yaml
 #
 #   Edit gsd-setup/template/.bob/gsd_modes.yaml directly.
-#   deploy-gsd.sh copies it to <target>/.bob/custom_modes.yaml on install.
+#   deploy-gsd.sh copies it to <target>/.bob/gsd_modes.yaml on install.
 #
 #   Usage:
 #     scripts/gen-modes.sh [--dry-run]

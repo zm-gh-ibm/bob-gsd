@@ -7,18 +7,18 @@ registered.
 ## To register for this project only (project-scoped)
 
 Copy (or symlink) the contents of `.bob/gsd_modes.yaml` into
-`.bob/custom_modes.yaml` under the `customModes:` key. Bob loads `.bob/custom_modes.yaml`
+`.bob/gsd_modes.yaml` under the `customModes:` key. Bob loads `.bob/gsd_modes.yaml`
 automatically for every session in this project.
 
 ## To register globally (all projects)
 
-Copy the mode definitions into Bob's global `custom_modes.yaml`
+Copy the mode definitions into Bob's global `gsd_modes.yaml`
 (Settings → Modes → Edit Global Modes). Global modes are available in every project.
 
 ## Keeping them in sync
 
 When you edit `.bob/gsd_modes.yaml`, you must also update the corresponding entry in
-whichever `custom_modes.yaml` you registered it in. `.bob/gsd_modes.yaml` is the source
+whichever `gsd_modes.yaml` you registered it in. `.bob/gsd_modes.yaml` is the source
 of truth — the registered copy is a deployment artifact.
 
 ## Quick check

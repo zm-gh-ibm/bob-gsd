@@ -51,7 +51,7 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
 
 1. Checks prerequisites (`bob`, `python3` — warns, doesn't abort)
 2. Asks whether to install modes **project-scoped** or **globally**
-3. Copies `.gsd/` scaffold, `.bob/rules-*/`, and `custom_modes.yaml` into the target
+3. Copies `.gsd/` scaffold, `.bob/rules-*/`, and `gsd_modes.yaml` into the target
 4. Appends `.gsd/`, `.bob/`, and `.bob/notes/` gitignore entries (idempotent)
 5. Prints next steps
 
@@ -71,7 +71,7 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
     VERIFY.md           ← verification reports (written by gsd-verifier)
 
   .bob/
-    custom_modes.yaml   ← custom modes Bob loads (the live runtime copy)
+    gsd_modes.yaml      ← custom modes Bob loads (the live runtime copy)
     rules-agent/        ← general agent rules
     rules-ask/          ← ask-mode rules
     rules-gsd-executor/ ← executor behavioral guardrails
@@ -91,14 +91,14 @@ The bootstrapper (`install.sh`) handles clone-if-needed and then delegates to `d
 
 | Scope | Where modes are written | Effect |
 |---|---|---|
-| **Project** | `<target>/.bob/custom_modes.yaml` | GSD modes available only in that project |
-| **Global** | `~/.bob/custom_modes.yaml` | GSD modes available in every Bob project |
+| **Project** | `<target>/.bob/gsd_modes.yaml` | GSD modes available only in that project |
+| **Global** | `~/.bob/gsd_modes.yaml` | GSD modes available in every Bob project |
 
 Choose **project** if you want to pilot GSD on one project first.
 Choose **global** if you deploy GSD to multiple projects and want consistent mode availability.
 
 > **Note:** The `.bob/rules-*/` files are always project-scoped (they go in the target's `.bob/`
-> directory). Mode scope only affects where `custom_modes.yaml` is written.
+> directory). Mode scope only affects where `gsd_modes.yaml` is written.
 
 ---
 
@@ -147,7 +147,7 @@ git pull
 gsd-setup/install.sh ~/path/to/your-project
 ```
 
-The installer detects existing `custom_modes.yaml` and offers to overwrite, merge, or skip.
+The installer detects existing `gsd_modes.yaml` and offers to overwrite, merge, or skip.
 When merging, the existing file is automatically backed up to `.bak-<timestamp>`.
 
 ---
@@ -159,8 +159,8 @@ If you can't use the installer, copy these by hand:
 1. Copy `gsd-setup/template/.gsd/` into your project root as `.gsd/`
 2. Copy `gsd-setup/template/.bob/rules-*/` into your project's `.bob/`
 3. Copy `gsd-setup/template/.bob/gsd_modes.yaml` to:
-   - Project: `<target>/.bob/custom_modes.yaml`
-   - Global: `~/.bob/custom_modes.yaml` (or Bob's equivalent global config)
+   - Project: `<target>/.bob/gsd_modes.yaml`
+   - Global: `~/.bob/gsd_modes.yaml` (or Bob's equivalent global config)
 4. Add `.bob/notes/`, `.gsd/`, and `.bob/` to your `.gitignore`
 
 ---
@@ -170,7 +170,7 @@ If you can't use the installer, copy these by hand:
 ```
 gsd-setup/template/.bob/gsd_modes.yaml     ← THE source of truth (edit this)
         │
-        └─ gsd-setup/scripts/deploy-gsd.sh ──► <target>/.bob/custom_modes.yaml
+        └─ gsd-setup/scripts/deploy-gsd.sh ──► <target>/.bob/gsd_modes.yaml
 ```
 
 **Edit `gsd-setup/template/.bob/gsd_modes.yaml` directly.** No generation step is needed.

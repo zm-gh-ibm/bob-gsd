@@ -36,7 +36,7 @@ Running the installer copies into your target project:
 
 - **`.gsd/`** — workflow state files (`PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, etc.)
 - **`.bob/rules-*/`** — GSD mode behavioral guardrails
-- **`.bob/custom_modes.yaml`** — GSD mode definitions Bob loads at runtime
+- **`.bob/gsd_modes.yaml`** — GSD mode definitions Bob loads at runtime
 - **`.gitignore`** — `.gsd/`, `.bob/`, and `.bob/notes/` entries appended (idempotent)
 
 See [`gsd-setup/docs/DEPLOY.md`](gsd-setup/docs/DEPLOY.md) for full details.

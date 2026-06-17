@@ -7,7 +7,7 @@
 #     1. Copies .gsd/ scaffold (STATE, REQUIREMENTS, ROADMAP, PROJECT, CONTEXT,
 #        VERIFY, STATE.schema, modes/) into <target>/.gsd/
 #     2. Copies .bob/rules-*/ into <target>/.bob/
-#     3. Installs custom_modes.yaml to project scope (.bob/) or global scope
+#     3. Installs gsd_modes.yaml to project scope (.bob/) or global scope
 #        (~/.bob/) — you choose interactively
 #     4. Appends .gitignore.snippet entries to <target>/.gitignore (idempotent)
 #
@@ -133,20 +133,20 @@ echo "  Where should the GSD custom modes (gsd-orchestrator, gsd-executor, etc.)
 echo "  installed?"
 echo
 echo "    [1] Project-scoped  — only for this project"
-echo "        Writes to: $TARGET/.bob/custom_modes.yaml"
+echo "        Writes to: $TARGET/.bob/gsd_modes.yaml"
 echo
 echo "    [2] Global          — available in every Bob project"
-echo "        Writes to: ~/.bob/custom_modes.yaml"
+echo "        Writes to: ~/.bob/gsd_modes.yaml"
 echo
 read -r -p "  Choice [1/2]: " scope_choice
 
 case "$scope_choice" in
   2)
-    MODES_DEST="$HOME/.bob/custom_modes.yaml"
+    MODES_DEST="$HOME/.bob/gsd_modes.yaml"
     MODES_SCOPE="global"
     ;;
   *)
-    MODES_DEST="$TARGET/.bob/custom_modes.yaml"
+    MODES_DEST="$TARGET/.bob/gsd_modes.yaml"
     MODES_SCOPE="project"
     ;;
 esac
@@ -190,7 +190,7 @@ do_cp() {
 # ── step 3: install .gsd/ scaffold ───────────────────────────────────────────
 step "3/5  Installing .gsd/ scaffold"
 
-GSD_SCAFFOLD="$GSD_REPO/.gsd"
+GSD_SCAFFOLD="$GSD_REPO/gsd-setup/template/.gsd"
 GSD_DEST="$TARGET/.gsd"
 
 # Guard: don't overwrite an already-initialized project (has real content in PROJECT.md)
@@ -235,7 +235,7 @@ fi
 # ── step 4: install .bob/rules-*/ ────────────────────────────────────────────
 step "4/5  Installing .bob/ rules"
 
-BOB_SRC="$GSD_REPO/.bob"
+BOB_SRC="$GSD_REPO/gsd-setup/template/.bob"
 BOB_DEST="$TARGET/.bob"
 
 for rules_dir in "$BOB_SRC"/rules-*/; do
@@ -252,10 +252,10 @@ done
 
 success ".bob/rules-*/ installed"
 
-# ── step 5a: install custom_modes.yaml ───────────────────────────────────────
+# ── step 5a: install gsd_modes.yaml ─────────────────────────────────────────
 step "5/5  Installing custom modes ($MODES_SCOPE)"
 
-MODES_SRC="$GSD_REPO/.bob/gsd_modes.yaml"
+MODES_SRC="$GSD_REPO/gsd-setup/template/.bob/gsd_modes.yaml"
 
 if [ -f "$MODES_DEST" ]; then
   warn "$(basename "$MODES_DEST") already exists at $MODES_DEST"
@@ -389,7 +389,7 @@ echo "    2. Open a Bob session in that directory"
 if [ "$MODES_SCOPE" = "global" ]; then
   echo "    3. Modes are available globally — no further setup needed"
 else
-  echo "    3. Bob will load modes from .bob/custom_modes.yaml automatically"
+  echo "    3. Bob will load modes from .bob/gsd_modes.yaml automatically"
 fi
 echo "    4. Switch to 'GSD Initializer' mode and run the project interview"
 echo "    5. After init, switch to 'GSD Orchestrator' and send:"

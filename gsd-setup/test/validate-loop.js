@@ -190,7 +190,7 @@ assert(
 );
 
 // ── A-12: bob --help lists ALL SIX GSD modes as valid chat-modes ──────────────
-// A project must vendor the complete .bob/custom_modes.yaml; the global store may be
+// A project must vendor the complete .bob/gsd_modes.yaml; the global store may be
 // missing gsd-verifier/gsd-shipper (Phase 7 defect F-3). This preflight asserts every
 // slug resolves before a live run — see docs/DEPLOY.md.
 
@@ -218,7 +218,7 @@ assert(
   helpText !== '' && missingModes.length === 0,
   helpText === ''
     ? 'bob --help failed or returned empty output'
-    : `Missing GSD mode(s) in bob --help: ${missingModes.join(', ')} — vendor the complete .bob/custom_modes.yaml (see docs/DEPLOY.md)`
+    : `Missing GSD mode(s) in bob --help: ${missingModes.join(', ')} — vendor the complete .bob/gsd_modes.yaml (see docs/DEPLOY.md)`
 );
 
 // ── Behavioral fixtures: actually EXECUTE the scripts (A-15…A-20) ─────────────
@@ -375,12 +375,12 @@ if (fs.existsSync(BUNDLE)) {
   const gitOk  = haveCmd('git', ['--version']);
   const psOk   = haveCmd('powershell', ['-NoProfile', '-Command', 'exit 0']);
 
-  // A-23  payload custom_modes.yaml lists all six GSD slugs
-  const cm = readAbs(path.join(PAYLOAD, '.bob', 'custom_modes.yaml')) || '';
+  // A-23  payload gsd_modes.yaml lists all six GSD slugs
+  const cm = readAbs(path.join(PAYLOAD, '.bob', 'gsd_modes.yaml')) || '';
   const cmMissing = GSD_MODES.filter((m) => !new RegExp('slug:\\s*' + m + '(?:\\s|$)', 'm').test(cm));
-  assert('A-23', 'gsd-bob payload custom_modes.yaml lists all six GSD slugs',
+  assert('A-23', 'gsd-bob payload gsd_modes.yaml lists all six GSD slugs',
     cm !== '' && cmMissing.length === 0,
-    cm === '' ? 'payload/.bob/custom_modes.yaml missing' : `missing slugs: ${cmMissing.join(', ')}`);
+    cm === '' ? 'payload/.bob/gsd_modes.yaml missing' : `missing slugs: ${cmMissing.join(', ')}`);
 
   // A-24  payload has all six rules-gsd-* directories
   const missingRuleDirs = GSD_MODES.filter((m) => !fs.existsSync(path.join(PAYLOAD, '.bob', 'rules-' + m)));
@@ -418,7 +418,7 @@ if (fs.existsSync(BUNDLE)) {
   // A-28  payload does not drift from canonical sources (representative file set)
   // Paths use gsd-setup/ for user-facing assets; repo root for .bob/ assets.
   const driftPairs = [
-    { src: path.join(GSD_REPO_ROOT, '.bob', 'custom_modes.yaml'),             payload: '.bob/custom_modes.yaml' },
+    { src: path.join(GSD_REPO_ROOT, 'gsd-setup', 'template', '.bob', 'gsd_modes.yaml'), payload: '.bob/gsd_modes.yaml' },
     { src: path.join(GSD_SETUP_DIR, 'scripts', 'run-unattended.sh'),          payload: 'scripts/run-unattended.sh' },
     { src: path.join(GSD_SETUP_DIR, 'scripts', 'run-unattended.ps1'),         payload: 'scripts/run-unattended.ps1' },
     { src: path.join(GSD_SETUP_DIR, 'scripts', 'run-unattended.bat'),         payload: 'scripts/run-unattended.bat' },
@@ -474,7 +474,7 @@ if (fs.existsSync(BUNDLE)) {
 
   // Helper: assert a freshly-installed target repo got the core artifacts + a valid seed.
   function assertInstalled(id, desc, dir, detailPrefix) {
-    const okModes = (readAbs(path.join(dir, '.bob', 'custom_modes.yaml')) || '').match(/slug:/g);
+    const okModes = (readAbs(path.join(dir, '.bob', 'gsd_modes.yaml')) || '').match(/slug:/g);
     const okRules = GSD_MODES.every((m) => fs.existsSync(path.join(dir, '.bob', 'rules-' + m)));
     const st = readAbs(path.join(dir, '.gsd', 'STATE.md')) || '';
     const okState = /^phase_status: discussing$/m.test(st) && /^current_phase: 1$/m.test(st);
@@ -538,13 +538,13 @@ if (fs.existsSync(BUNDLE)) {
     try {
       home = fs.mkdtempSync(path.join(os.tmpdir(), 'gsd-home-'));
       fs.mkdirSync(path.join(home, '.bob'), { recursive: true });
-      fs.writeFileSync(path.join(home, '.bob', 'custom_modes.yaml'),
+      fs.writeFileSync(path.join(home, '.bob', 'gsd_modes.yaml'),
         'customModes:\n  - slug: my-custom-mode\n    name: Mine\n    roleDefinition: x\n  - slug: gsd-init\n    name: Old\n    roleDefinition: y\n');
       dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gsd-gm-'));
       spawnSync('git', ['init', '-q'], { cwd: dir, encoding: 'utf8' });
       spawnSync('bash', [path.join(BUNDLE, 'setup.sh'), '--target', dir, '--global-modes'],
         { cwd: dir, encoding: 'utf8', timeout: 120000, env: { ...process.env, HOME: home } });
-      const merged = readAbs(path.join(home, '.bob', 'custom_modes.yaml')) || '';
+      const merged = readAbs(path.join(home, '.bob', 'gsd_modes.yaml')) || '';
       const initCount = (merged.match(/slug:\s*gsd-init(?:\s|$)/gm) || []).length;
       const allSix = GSD_MODES.every((m) => new RegExp('slug:\\s*' + m + '(?:\\s|$)', 'm').test(merged));
       const preserved = /slug:\s*my-custom-mode/.test(merged);

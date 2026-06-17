@@ -99,7 +99,7 @@ mode_blocks = re.split(r"(?=^  - slug:)", raw, flags=re.MULTILINE)[1:]
 print(f"Found {len(mode_blocks)} modes in {SOURCE.relative_to(REPO_ROOT)}")
 print(f"Source of truth: {SOURCE.relative_to(REPO_ROOT)}")
 print(f"\ngsd-setup/template/.bob/gsd_modes.yaml is the source of truth.")
-print(f"deploy-gsd.sh copies it to <target>/.bob/custom_modes.yaml on install.")
+print(f"deploy-gsd.sh copies it to <target>/.bob/gsd_modes.yaml on install.")
 print(f"Edit it directly — no generation step needed.")
 
 print(f"\nDone. {len(mode_blocks)} modes available.")
